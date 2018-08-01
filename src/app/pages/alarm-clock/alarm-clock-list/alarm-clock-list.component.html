@@ -1,0 +1,58 @@
+<ng-container *ngIf="!isAlarmClockListLoading; else contacts_loading">
+
+  <mat-list>
+
+    <ng-container *ngFor="let clock of alarmClocks; let i = index;let last = last">
+
+      <div class="list-item-wrap" [class.remove-mode]="clock.removeMode">
+
+        <mat-list-item (click)="goToAlarmClockDetail()"
+                       (touchstart)="swipe($event, 'start', clock)"
+                       (touchend)="swipe($event, 'end', clock)"
+                       [ngClass]="{'edit-mode':isAlarmEditMode ,
+                     'disabled':clock.disabled, 'remove-mode':clock.removeMode}">
+
+          <div class="remove-button-wrap" *ngIf="isAlarmEditMode">
+            <button mat-icon-button (click)="showRemoveButton(clock)">
+              <mat-icon aria-label="Edit mode">remove_circle</mat-icon>
+            </button>
+          </div>
+
+          <h4 class="time" mat-line>07:00</h4>
+          <p class="description" mat-line> Будильник, каждый будний день</p>
+
+          <div class="action-icons">
+
+            <mat-slide-toggle *ngIf="!isAlarmEditMode "
+                              [checked]="!clock.disabled"
+                              (change)="clock.disabled = !clock.disabled">
+            </mat-slide-toggle>
+
+            <button mat-icon-button *ngIf="isAlarmEditMode" (click)="goToEditAlarmClockPage(clock)">
+              <mat-icon aria-label="Go to alarm time edit">keyboard_arrow_right</mat-icon>
+            </button>
+
+          </div>
+
+          <mat-divider></mat-divider>
+
+        </mat-list-item>
+
+        <div class="remove-button" *ngIf="clock.removeMode" (click)="removeAlarmClockFormList(clock)">
+          <p>Удалить</p>
+        </div>
+      </div>
+
+    </ng-container>
+
+  </mat-list>
+
+</ng-container>
+
+<div *ngIf="!isAlarmClockListLoading && !alarmClocks.length">
+  <p class="no-alarms-text">Нет будильников</p>
+</div>
+
+<ng-template #contacts_loading>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>
