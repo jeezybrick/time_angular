@@ -1,3 +1,63 @@
-<p>
-  alarm-clock-add works!
-</p>
+<mat-list>
+
+  <mat-list-item>
+
+    <h4 class="option" mat-line>Повтор</h4>
+
+    <div class="action-icons default">
+      <span>Никогда</span>
+      <button mat-icon-button *ngIf="true">
+        <mat-icon aria-label="mjjjj">keyboard_arrow_right</mat-icon>
+      </button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+  </mat-list-item>
+
+  <mat-list-item>
+
+    <h4 class="option" mat-line>Название</h4>
+
+    <div class="action-icons default">
+      <span>Будильник</span>
+      <button mat-icon-button *ngIf="true">
+        <mat-icon aria-label="mjjjj">keyboard_arrow_right</mat-icon>
+      </button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+  </mat-list-item>
+
+  <mat-list-item>
+
+    <h4 class="option" mat-line>Мелодия</h4>
+
+    <div class="action-icons default">
+      <span>Не выбран</span>
+      <button mat-icon-button *ngIf="true">
+        <mat-icon aria-label="mjjjj">keyboard_arrow_right</mat-icon>
+      </button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+  </mat-list-item>
+
+   <mat-list-item>
+
+    <h4 class="option" mat-line>Повторение сигнала</h4>
+
+    <div class="action-icons toggle">
+
+      <mat-slide-toggle></mat-slide-toggle>
+
+    </div>
+
+    <mat-divider></mat-divider>
+
+  </mat-list-item>
+
+</mat-list>
+

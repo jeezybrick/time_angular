@@ -6,14 +6,14 @@
 
       <div class="list-item-wrap" [class.remove-mode]="clock.removeMode">
 
-        <mat-list-item (click)="goToAlarmClockDetail()"
+        <mat-list-item (click)="isAlarmEditMode ? goToEditAlarmClockPage(clock): return; "
                        (touchstart)="swipe($event, 'start', clock)"
                        (touchend)="swipe($event, 'end', clock)"
                        [ngClass]="{'edit-mode':isAlarmEditMode ,
                      'disabled':clock.disabled, 'remove-mode':clock.removeMode}">
 
           <div class="remove-button-wrap" *ngIf="isAlarmEditMode">
-            <button mat-icon-button (click)="showRemoveButton(clock)">
+            <button mat-icon-button (click)="showRemoveButton($event, clock)">
               <mat-icon aria-label="Edit mode">remove_circle</mat-icon>
             </button>
           </div>

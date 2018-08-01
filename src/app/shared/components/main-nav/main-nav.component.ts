@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { Location } from '@angular/common';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlarmClockService } from '../../services/alarm-clock.service';
+import { MainNavService } from '../../services/main-nav.service';
 
 @Component({
   selector: 'app-main-nav',
@@ -13,6 +15,7 @@ import { AlarmClockService } from '../../services/alarm-clock.service';
 export class MainNavComponent {
 
   public isAlarmClockEditMode: Observable<boolean>;
+  public isShowModifyIcons: Observable<boolean>;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -21,9 +24,12 @@ export class MainNavComponent {
 
   constructor(private breakpointObserver: BreakpointObserver,
               private route: ActivatedRoute,
+              private location: Location,
               private alarmClockService: AlarmClockService,
+              private mainNavService: MainNavService,
               private router: Router) {
     this.isAlarmClockEditMode = alarmClockService.isEditMode();
+    this.isShowModifyIcons = mainNavService.isShowModifyIcons();
   }
 
   public goToAddAlarmClockPage() {
@@ -44,5 +50,10 @@ export class MainNavComponent {
   public disableEditMode() {
     this.alarmClockService.disableEditMode();
   }
+
+  public goToPreviousPage(): void {
+    this.location.back();
+  }
+
 
 }

@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AlarmClockService } from '../../../shared/services/alarm-clock.service';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { MainNavService } from '../../../shared/services/main-nav.service';
 
 @Component({
   selector: 'app-alarm-clock-list',
   templateUrl: './alarm-clock-list.component.html',
   styleUrls: ['./alarm-clock-list.component.scss']
 })
-export class AlarmClockListComponent implements OnInit {
+export class AlarmClockListComponent implements OnInit, OnDestroy {
 
   public isAlarmEditMode: boolean;
   public alarmClocks: any = [{
@@ -24,10 +24,13 @@ export class AlarmClockListComponent implements OnInit {
   private swipeTime?: number;
 
   constructor(private router: Router,
+              private mainNavService: MainNavService,
               private alarmClockService: AlarmClockService) {
   }
 
   ngOnInit() {
+
+    this.mainNavService.showModifyIcons();
 
     this.alarmClockService.isEditMode()
       .subscribe((value) => {
@@ -46,11 +49,16 @@ export class AlarmClockListComponent implements OnInit {
 
   }
 
+  ngOnDestroy() {
+    this.mainNavService.hideModifyIcons();
+  }
+
   public goToEditAlarmClockPage(clock) {
     this.router.navigate(['/alarm-clock', clock.id, 'edit']);
   }
 
-  public showRemoveButton(clock): void {
+  public showRemoveButton(event: Event, clock): void {
+    event.stopPropagation();
     clock.removeMode = true;
   }
 
