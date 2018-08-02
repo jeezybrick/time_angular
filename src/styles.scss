@@ -3,4 +3,11 @@
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 
 html, body { height: 100%; }
+html { -webkit-text-size-adjust: none; }
 body { margin: 0; font-family: 'Roboto', sans-serif; }
+
+.owl-dt-inline-container, .owl-dt-popup-container {
+  max-width: 24rem;
+  width: 100%;
+  margin: 0 auto;
+}
