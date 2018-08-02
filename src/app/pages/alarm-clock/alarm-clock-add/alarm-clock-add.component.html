@@ -103,5 +103,14 @@
 
 <div>
   <br><br>
-  <button mat-raised-button color="primary" (click)="saveChanges()">Submit</button>
+  <button mat-raised-button color="primary"
+          (click)="saveChanges()"
+          style="width: 100%;">
+    Submit
+  </button>
+</div>
+
+<div>
+  <br>
+  {{ savedData | json }}
 </div>

@@ -28,6 +28,7 @@ export class AlarmClockAddComponent implements OnInit {
   public userRepeatSignalChoice = false;
   public alarmName = 'Будильник';
   public time: Date = new Date();
+  public savedData: any;
 
   constructor() { }
 
@@ -67,6 +68,8 @@ export class AlarmClockAddComponent implements OnInit {
       melody: this.userMelodyChoice,
       isRepeatSignal: this.userRepeatSignalChoice
     };
+
+    this.savedData = data;
 
     console.log(data);
   }
