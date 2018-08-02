@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Alarm } from '../../../shared/models/alarm.model';
+import { Router } from '@angular/router';
+import { AlarmClockService } from '../../../shared/services/alarm-clock.service';
+
 
 @Component({
   selector: 'app-alarm-clock-add',
@@ -28,9 +32,10 @@ export class AlarmClockAddComponent implements OnInit {
   public userRepeatSignalChoice = false;
   public alarmName = 'Будильник';
   public time: Date = new Date();
-  public savedData: any;
 
-  constructor() { }
+  constructor(private router: Router,
+              private alarmClockService: AlarmClockService) {
+  }
 
   ngOnInit() {
   }
@@ -61,17 +66,21 @@ export class AlarmClockAddComponent implements OnInit {
 
   public saveChanges(): void {
 
-    const data = {
+    const saveData = {
+      id: Math.floor(Math.random() * 100001),
       time: this.time,
       daysOfWeek: this.userRepeatChoices,
-      alarmName: this.alarmName,
+      name: this.alarmName.length ? this.alarmName : 'Будильник',
       melody: this.userMelodyChoice,
-      isRepeatSignal: this.userRepeatSignalChoice
+      isRepeatSignal: this.userRepeatSignalChoice,
+      disable: false
     };
 
-    this.savedData = data;
+    this.alarmClockService.saveAlarmToList(saveData)
+      .subscribe((data: Alarm[]) => {
+        this.router.navigate(['/alarm-clock']);
+      });
 
-    console.log(data);
   }
 
 }

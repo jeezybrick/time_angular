@@ -4,7 +4,7 @@
 </div>
 
 
-<mat-accordion [multi]="true">
+<mat-accordion [multi]="false">
 
   <mat-expansion-panel>
     <mat-expansion-panel-header>
@@ -12,6 +12,10 @@
         Повтор
       </mat-panel-title>
       <mat-panel-description>
+
+        <ng-container *ngIf="!userRepeatChoices.length">
+          Никогда
+        </ng-container>
        <span class="user-repeat-choices-list" *ngFor="let choice of userRepeatChoices; let i = index;let last = last">
          {{ choice | slice:7:9 }} 	&nbsp;
        </span>
@@ -108,9 +112,4 @@
           style="width: 100%;">
     Submit
   </button>
-</div>
-
-<div>
-  <br>
-  {{ savedData | json }}
 </div>

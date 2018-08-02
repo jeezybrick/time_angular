@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AlarmClockService } from '../../../shared/services/alarm-clock.service';
 import { Router } from '@angular/router';
 import { MainNavService } from '../../../shared/services/main-nav.service';
+import { Alarm } from '../../../shared/models/alarm.model';
 
 @Component({
   selector: 'app-alarm-clock-list',
@@ -11,14 +12,7 @@ import { MainNavService } from '../../../shared/services/main-nav.service';
 export class AlarmClockListComponent implements OnInit, OnDestroy {
 
   public isAlarmEditMode: boolean;
-  public alarmClocks: any = [{
-    id: 1,
-    disabled: true
-  },
-    {
-      id: 2,
-      disable: false
-    }];
+  public alarmClocks: Alarm[] = [];
   public isAlarmClockListLoading = false;
   private swipeCoord?: [number, number];
   private swipeTime?: number;
@@ -29,6 +23,8 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    this.getAlarmList();
 
     this.mainNavService.showModifyIcons();
 
@@ -53,8 +49,18 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
     this.mainNavService.hideModifyIcons();
   }
 
-  public goToEditAlarmClockPage(clock) {
-    this.router.navigate(['/alarm-clock', clock.id, 'edit']);
+  private getAlarmList(): void {
+
+    this.alarmClockService.getAlarmList()
+      .subscribe((data) => {
+        console.log(data);
+        this.alarmClocks = data;
+      });
+
+  }
+
+  public goToEditAlarmClockPage(alarm: Alarm) {
+    this.router.navigate(['/alarm-clock', alarm.id, 'edit']);
   }
 
   public showRemoveButton(event: Event, clock): void {
@@ -62,15 +68,16 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
     clock.removeMode = true;
   }
 
-  public removeAlarmClockFormList(clock): void {
+  public removeAlarmClockFormList(alarm: Alarm): void {
+    this.alarmClockService.removeAlarmFromList(alarm);
+  }
 
-    const index = this.alarmClocks.findIndex((clockItem) => {
-      return clockItem.id === clock.id;
-    });
+  public toggleAlarmState(alarm: Alarm): void {
 
-    if (index > -1) {
-      this.alarmClocks.splice(index, 1);
-    }
+    this.alarmClockService.disableAlarmItem(alarm)
+      .subscribe(() => {
+        alarm.disable = !alarm.disable;
+      });
 
   }
 

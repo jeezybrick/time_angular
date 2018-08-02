@@ -10,7 +10,7 @@
                        (touchstart)="swipe($event, 'start', clock)"
                        (touchend)="swipe($event, 'end', clock)"
                        [ngClass]="{'edit-mode':isAlarmEditMode ,
-                     'disabled':clock.disabled, 'remove-mode':clock.removeMode}">
+                     'disabled':clock.disable, 'remove-mode':clock.removeMode}">
 
           <div class="remove-button-wrap" *ngIf="isAlarmEditMode">
             <button mat-icon-button (click)="showRemoveButton($event, clock)">
@@ -18,14 +18,28 @@
             </button>
           </div>
 
-          <h4 class="time" mat-line>07:00</h4>
-          <p class="description" mat-line> Будильник, каждый будний день</p>
+          <h4 class="time" mat-line>{{ clock.time | date: 'HH:mm'}}</h4>
+          <p class="description" mat-line> {{ clock.name }},
+
+            <ng-container *ngIf="clock.daysOfWeek.length">
+
+              <ng-container *ngFor="let day of clock.daysOfWeek">
+                <span style="text-transform: capitalize;">{{ day | slice:7:9 }}</span>
+              </ng-container>
+
+            </ng-container>
+
+            <ng-container *ngIf="!clock.daysOfWeek.length">
+              Никогда
+            </ng-container>
+
+          </p>
 
           <div class="action-icons">
 
-            <mat-slide-toggle *ngIf="!isAlarmEditMode "
-                              [checked]="!clock.disabled"
-                              (change)="clock.disabled = !clock.disabled">
+            <mat-slide-toggle *ngIf="!isAlarmEditMode"
+                              [checked]="!clock.disable"
+                              (change)="toggleAlarmState(clock)">
             </mat-slide-toggle>
 
             <button mat-icon-button *ngIf="isAlarmEditMode" (click)="goToEditAlarmClockPage(clock)">
