@@ -1,63 +1,106 @@
-<mat-list>
 
-  <mat-list-item>
+<div class="time-picker-wrap">
+  <owl-date-time-inline [pickerType]="'timer'" [(ngModel)]="time"></owl-date-time-inline>
+</div>
 
-    <h4 class="option" mat-line>Повтор</h4>
 
-    <div class="action-icons default">
-      <span>Никогда</span>
-      <button mat-icon-button *ngIf="true">
-        <mat-icon aria-label="mjjjj">keyboard_arrow_right</mat-icon>
-      </button>
-    </div>
+<mat-accordion [multi]="true">
 
-    <mat-divider></mat-divider>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Повтор
+      </mat-panel-title>
+      <mat-panel-description>
+       <span class="user-repeat-choices-list" *ngFor="let choice of userRepeatChoices; let i = index;let last = last">
+         {{ choice | slice:7:9 }} 	&nbsp;
+       </span>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
 
-  </mat-list-item>
+    <mat-list>
 
-  <mat-list-item>
+      <mat-list-item *ngFor="let choice of repeatChoices; let i = index;let last = last"
+                     (click)="toggleUserRepeatChoice(choice)">
 
-    <h4 class="option" mat-line>Название</h4>
+        <h4 class="option" mat-line>{{ choice }}</h4>
 
-    <div class="action-icons default">
-      <span>Будильник</span>
-      <button mat-icon-button *ngIf="true">
-        <mat-icon aria-label="mjjjj">keyboard_arrow_right</mat-icon>
-      </button>
-    </div>
+        <div class="action-icons default">
+          <button mat-icon-button *ngIf="isChoiceInUserChoices(choice)">
+            <mat-icon aria-label="mjjjj">done</mat-icon>
+          </button>
+        </div>
 
-    <mat-divider></mat-divider>
+        <mat-divider></mat-divider>
 
-  </mat-list-item>
+      </mat-list-item>
+    </mat-list>
 
-  <mat-list-item>
+  </mat-expansion-panel>
+  <mat-divider></mat-divider>
 
-    <h4 class="option" mat-line>Мелодия</h4>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Название
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ alarmName }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-form-field>
+      <input matInput placeholder="Название" [(ngModel)]="alarmName">
+    </mat-form-field>
+  </mat-expansion-panel>
+  <mat-divider></mat-divider>
 
-    <div class="action-icons default">
-      <span>Не выбран</span>
-      <button mat-icon-button *ngIf="true">
-        <mat-icon aria-label="mjjjj">keyboard_arrow_right</mat-icon>
-      </button>
-    </div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Мелодия
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ userMelodyChoice }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+     <mat-list>
 
-    <mat-divider></mat-divider>
+      <mat-list-item *ngFor="let melody of melodyList; let i = index;let last = last"
+                     (click)="setUserMelodyChoice(melody)">
 
-  </mat-list-item>
+        <h4 class="option" mat-line>{{ melody }}</h4>
 
-   <mat-list-item>
+        <div class="action-icons default">
+          <button mat-icon-button *ngIf="isMelodyInUserChoice(melody)">
+            <mat-icon aria-label="mjjjj">done</mat-icon>
+          </button>
+        </div>
 
-    <h4 class="option" mat-line>Повторение сигнала</h4>
+        <mat-divider></mat-divider>
 
-    <div class="action-icons toggle">
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+  <mat-divider></mat-divider>
 
-      <mat-slide-toggle></mat-slide-toggle>
+  <mat-expansion-panel hideToggle class="repeat-signal-panel" [disabled]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Повторение сигнала
+      </mat-panel-title>
+      <mat-panel-description>
+         <mat-slide-toggle [checked]="userRepeatSignalChoice"
+                           (change)="userRepeatSignalChoice = !userRepeatSignalChoice">
+         </mat-slide-toggle>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
 
-    </div>
+  </mat-expansion-panel>
+  <mat-divider></mat-divider>
 
-    <mat-divider></mat-divider>
+</mat-accordion>
 
-  </mat-list-item>
 
-</mat-list>
-
+<div>
+  <button mat-raised-button color="primary" (click)="saveChanges()">Submit</button>
+</div>

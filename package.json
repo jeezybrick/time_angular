@@ -27,6 +27,7 @@
     "@nguniversal/module-map-ngfactory-loader": "^6.0.0",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
+    "ng-pick-datetime": "^6.0.10",
     "rxjs": "^6.0.0",
     "ts-loader": "^4.4.2",
     "zone.js": "^0.8.26"

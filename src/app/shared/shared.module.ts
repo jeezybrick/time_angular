@@ -1,17 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 import {
   MatButtonModule,
   MatCardModule,
   MatDialogModule,
+  MatExpansionModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
   MatListModule,
   MatProgressBarModule, MatSlideToggleModule
 } from '@angular/material';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -20,6 +23,7 @@ import {
     MatProgressBarModule
   ],
   exports: [
+    FormsModule,
     MatListModule,
     MatFormFieldModule,
     MatInputModule,
@@ -28,7 +32,10 @@ import {
     MatIconModule,
     MatCardModule,
     MatProgressBarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatExpansionModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
   ],
   declarations: []
 })
