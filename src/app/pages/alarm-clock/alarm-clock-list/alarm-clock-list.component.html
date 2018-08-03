@@ -4,13 +4,13 @@
 
     <ng-container *ngFor="let clock of alarmClocks; let i = index;let last = last">
 
-      <div class="list-item-wrap" [class.remove-mode]="clock.removeMode">
+      <div class="list-item-wrap" [class.remove-mode]="isAlarmInRemoveMode(clock)">
 
-        <mat-list-item (click)="isAlarmEditMode ? goToEditAlarmClockPage(clock): return; "
+        <mat-list-item (click)="isAlarmEditMode ? goToEditAlarmClockPage(clock): ''; "
                        (touchstart)="swipe($event, 'start', clock)"
                        (touchend)="swipe($event, 'end', clock)"
                        [ngClass]="{'edit-mode':isAlarmEditMode ,
-                     'disabled':clock.disable, 'remove-mode':clock.removeMode}">
+                     'disabled':clock.disable, 'remove-mode':isAlarmInRemoveMode(clock)}">
 
           <div class="remove-button-wrap" *ngIf="isAlarmEditMode">
             <button mat-icon-button (click)="showRemoveButton($event, clock)">
@@ -24,7 +24,9 @@
             <ng-container *ngIf="clock.daysOfWeek.length">
 
               <ng-container *ngFor="let day of clock.daysOfWeek">
-                <span style="text-transform: capitalize;">{{ day | slice:7:9 }}</span>
+                <span style="text-transform: capitalize;">
+                  {{ day | slice:7:9 }}
+                </span>
               </ng-container>
 
             </ng-container>
@@ -52,7 +54,8 @@
 
         </mat-list-item>
 
-        <div class="remove-button" *ngIf="clock.removeMode" (click)="removeAlarmClockFormList(clock)">
+        <div class="remove-button" *ngIf="isAlarmInRemoveMode(clock)"
+             (click)="removeAlarmClockFormList(clock)">
           <p>Удалить</p>
         </div>
       </div>

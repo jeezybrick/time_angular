@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AlarmClockService } from '../../../shared/services/alarm-clock.service';
 import { Router } from '@angular/router';
+
+import { AlarmClockService } from '../../../shared/services/alarm-clock.service';
 import { MainNavService } from '../../../shared/services/main-nav.service';
 import { Alarm } from '../../../shared/models/alarm.model';
 
@@ -14,6 +15,7 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
   public isAlarmEditMode: boolean;
   public alarmClocks: Alarm[] = [];
   public isAlarmClockListLoading = false;
+  public alarmItemInRemoveMode: Alarm;
   private swipeCoord?: [number, number];
   private swipeTime?: number;
 
@@ -26,35 +28,60 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
 
     this.getAlarmList();
 
-    this.mainNavService.showModifyIcons();
+    this.mainNavService.showAddIcon();
 
-    this.alarmClockService.isEditMode()
-      .subscribe((value) => {
+    this.mainNavService.onEditIconPushed()
+      .subscribe((data) => {
 
-        this.isAlarmEditMode = value;
+        this.isAlarmEditMode = true;
 
-        if (!this.isAlarmEditMode) {
+        this.mainNavService.hideEditIcon();
+        this.mainNavService.showSubmitIcon();
 
-         this.alarmClocks = this.alarmClocks.map((item) => {
-            item.removeMode = false;
-            return item;
-         });
-        }
+      });
+
+    this.mainNavService.onAddIconPushed()
+      .subscribe((data) => {
+        this.router.navigate(['/alarm-clock/add']);
+      });
+
+    this.mainNavService.onSubmitIconPushed()
+      .subscribe((data) => {
+
+        this.isAlarmEditMode = false;
+        this.alarmItemInRemoveMode = null;
+
+        this.mainNavService.hideSubmitIcon();
+        this.mainNavService.showEditIcon();
 
       });
 
   }
 
   ngOnDestroy() {
-    this.mainNavService.hideModifyIcons();
+    this.mainNavService.hideEditIcon();
+    this.mainNavService.hideAddIcon();
+    this.mainNavService.hideSubmitIcon();
   }
 
   private getAlarmList(): void {
 
     this.alarmClockService.getAlarmList()
-      .subscribe((data) => {
-        console.log(data);
+      .subscribe((data: Alarm[]) => {
+
         this.alarmClocks = data;
+
+        if (this.alarmClocks.length) {
+
+          if (!this.isAlarmEditMode) {
+            this.mainNavService.showEditIcon();
+          }
+
+        } else {
+          this.mainNavService.hideEditIcon();
+          this.mainNavService.hideSubmitIcon();
+        }
+
       });
 
   }
@@ -63,9 +90,13 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
     this.router.navigate(['/alarm-clock', alarm.id, 'edit']);
   }
 
-  public showRemoveButton(event: Event, clock): void {
+  public showRemoveButton(event: Event, alarm: Alarm): void {
     event.stopPropagation();
-    clock.removeMode = true;
+
+    if (this.alarmItemInRemoveMode === alarm) {
+      return;
+    }
+    this.alarmItemInRemoveMode = alarm;
   }
 
   public removeAlarmClockFormList(alarm: Alarm): void {
@@ -81,8 +112,12 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
 
   }
 
+  public isAlarmInRemoveMode(alarm: Alarm): boolean {
+    return this.alarmItemInRemoveMode === alarm;
+  }
 
-  swipe(e: TouchEvent, when: string, clock): void {
+
+  swipe(e: TouchEvent, when: string, alarm: Alarm): void {
 
     const coord: [number, number] = [e.changedTouches[0].pageX, e.changedTouches[0].pageY];
     const time = new Date().getTime();
@@ -97,9 +132,21 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
       if (duration < 1000 && Math.abs(direction[0]) > 30 && Math.abs(direction[0]) > Math.abs(direction[1] * 3)) {
         const swipe = direction[0] < 0 ? 'next' : 'previous';
 
-        if (swipe === 'previous') {
-          clock.removeMode = false;
+        if (this.isAlarmEditMode) {
+
+          if (swipe === 'previous') {
+
+            if (this.alarmItemInRemoveMode === alarm) {
+              this.alarmItemInRemoveMode = null;
+            }
+
+          } else {
+            this.alarmItemInRemoveMode = alarm;
+          }
+
         }
+
+
       }
     }
 

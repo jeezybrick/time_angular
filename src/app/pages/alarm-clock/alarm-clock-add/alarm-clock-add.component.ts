@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Alarm } from '../../../shared/models/alarm.model';
 import { Router } from '@angular/router';
 import { AlarmClockService } from '../../../shared/services/alarm-clock.service';
+import { MainNavService } from '../../../shared/services/main-nav.service';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { AlarmClockService } from '../../../shared/services/alarm-clock.service'
   templateUrl: './alarm-clock-add.component.html',
   styleUrls: ['./alarm-clock-add.component.scss']
 })
-export class AlarmClockAddComponent implements OnInit {
+export class AlarmClockAddComponent implements OnInit, OnDestroy {
 
   public repeatChoices: string[] = [
     'Каждый понедельник',
@@ -34,10 +35,16 @@ export class AlarmClockAddComponent implements OnInit {
   public time: Date = new Date();
 
   constructor(private router: Router,
+              private mainNavService: MainNavService,
               private alarmClockService: AlarmClockService) {
   }
 
   ngOnInit() {
+    this.mainNavService.showBackIcon();
+  }
+
+  ngOnDestroy() {
+    this.mainNavService.hideBackIcon();
   }
 
   public toggleUserRepeatChoice(choice): void {

@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AlarmClockService } from '../../services/alarm-clock.service';
 import { MainNavService } from '../../services/main-nav.service';
 
@@ -14,8 +14,10 @@ import { MainNavService } from '../../services/main-nav.service';
 })
 export class MainNavComponent {
 
-  public isAlarmClockEditMode: Observable<boolean>;
-  public isShowModifyIcons: Observable<boolean>;
+  public isShowAddIcon: Observable<boolean>;
+  public isShowEditIcon: Observable<boolean>;
+  public isShowSubmitIcon: Observable<boolean>;
+  public isShowBackIcon: Observable<boolean>;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -26,14 +28,12 @@ export class MainNavComponent {
               private route: ActivatedRoute,
               private location: Location,
               private alarmClockService: AlarmClockService,
-              private mainNavService: MainNavService,
-              private router: Router) {
-    this.isAlarmClockEditMode = alarmClockService.isEditMode();
-    this.isShowModifyIcons = mainNavService.isShowModifyIcons();
-  }
+              private mainNavService: MainNavService) {
 
-  public goToAddAlarmClockPage() {
-    this.router.navigate(['/alarm-clock/add']);
+    this.isShowAddIcon = mainNavService.isShowAddIcon();
+    this.isShowEditIcon = mainNavService.isShowEditIcon();
+    this.isShowSubmitIcon = mainNavService.isShowSubmitIcon();
+    this.isShowBackIcon = mainNavService.isShowBackIcon();
   }
 
   public closeSidebarByClick(drawer): void {
@@ -43,16 +43,20 @@ export class MainNavComponent {
     }
   }
 
-  public enableEditMode() {
-    this.alarmClockService.enableEditMode();
+  public onEditButtonPush() {
+    this.mainNavService.editIconPushed();
   }
 
-  public disableEditMode() {
-    this.alarmClockService.disableEditMode();
+  public onSubmitButtonPush() {
+    this.mainNavService.submitIconPushed();
   }
 
-  public goToPreviousPage(): void {
-    this.location.back();
+  public onAddButtonPush() {
+    this.mainNavService.addIconPushed();
+  }
+
+  public onBackButtonPush() {
+     this.location.back();
   }
 
 

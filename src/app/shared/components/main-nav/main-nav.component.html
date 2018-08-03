@@ -29,30 +29,31 @@
       <span>Будильник</span>
       <span class="spacer"></span>
 
-      <ng-container *ngIf="isShowModifyIcons | async">
+      <ng-container>
 
-        <button *ngIf="!(isAlarmClockEditMode | async)"
+        <button *ngIf="isShowEditIcon | async"
                 mat-icon-button
-                (click)="enableEditMode()">
+                (click)="onEditButtonPush()">
           <mat-icon aria-label="Edit mode">create</mat-icon>
         </button>
-        <button *ngIf="(isAlarmClockEditMode | async)"
+        <button *ngIf="isShowSubmitIcon | async"
                 mat-icon-button
-                (click)="disableEditMode()">
+                (click)="onSubmitButtonPush()">
           <mat-icon aria-label="Submit editing">done</mat-icon>
         </button>
-        <button mat-icon-button (click)="goToAddAlarmClockPage()">
+        <button *ngIf="isShowAddIcon | async"
+                mat-icon-button
+                (click)="onAddButtonPush()">
           <mat-icon aria-label="Add new alarm clock">add</mat-icon>
         </button>
 
       </ng-container>
 
-      <ng-container *ngIf="!(isShowModifyIcons | async)">
+      <ng-container *ngIf="isShowBackIcon | async">
 
-        <button mat-button (click)="goToPreviousPage()" class="go-back-button">
+        <button mat-button (click)="onBackButtonPush()" class="go-back-button">
           <mat-icon aria-label="Go back">arrow_back</mat-icon>
         </button>
-
 
       </ng-container>
 
