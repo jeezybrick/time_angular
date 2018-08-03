@@ -1,4 +1,4 @@
-import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {  NgModule } from '@angular/core';
 
@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './core/page-not-found/page-not-found.component';
 import { MainNavComponent } from './shared/components/main-nav/main-nav.component';
 import { ShellComponent } from './core/shell/shell.component';
+import { HeaderIconsComponent } from './shared/components/header-icons/header-icons.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ShellComponent } from './core/shell/shell.component';
     AppComponent,
     MainNavComponent,
     ShellComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    HeaderIconsComponent
   ],
   imports: [
     BrowserModule,

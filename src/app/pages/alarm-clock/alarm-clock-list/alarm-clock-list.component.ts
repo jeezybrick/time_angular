@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AlarmClockService } from '../../../shared/services/alarm-clock.service';
-import { MainNavService } from '../../../shared/services/main-nav.service';
 import { Alarm } from '../../../shared/models/alarm.model';
+import { HeaderIconsService } from '../../../shared/services/header-icons.service';
 
 @Component({
   selector: 'app-alarm-clock-list',
@@ -20,7 +20,7 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
   private swipeTime?: number;
 
   constructor(private router: Router,
-              private mainNavService: MainNavService,
+              private headerIconsService: HeaderIconsService,
               private alarmClockService: AlarmClockService) {
   }
 
@@ -28,40 +28,40 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
 
     this.getAlarmList();
 
-    this.mainNavService.showAddIcon();
+    this.headerIconsService.showAddIcon();
 
-    this.mainNavService.onEditIconPushed()
+    this.headerIconsService.onEditIconPushed()
       .subscribe((data) => {
 
         this.isAlarmEditMode = true;
 
-        this.mainNavService.hideEditIcon();
-        this.mainNavService.showSubmitIcon();
+        this.headerIconsService.hideEditIcon();
+        this.headerIconsService.showSubmitIcon();
 
       });
 
-    this.mainNavService.onAddIconPushed()
+    this.headerIconsService.onAddIconPushed()
       .subscribe((data) => {
         this.router.navigate(['/alarm-clock/add']);
       });
 
-    this.mainNavService.onSubmitIconPushed()
+    this.headerIconsService.onSubmitIconPushed()
       .subscribe((data) => {
 
         this.isAlarmEditMode = false;
         this.alarmItemInRemoveMode = null;
 
-        this.mainNavService.hideSubmitIcon();
-        this.mainNavService.showEditIcon();
+        this.headerIconsService.hideSubmitIcon();
+        this.headerIconsService.showEditIcon();
 
       });
 
   }
 
   ngOnDestroy() {
-    this.mainNavService.hideEditIcon();
-    this.mainNavService.hideAddIcon();
-    this.mainNavService.hideSubmitIcon();
+    this.headerIconsService.hideEditIcon();
+    this.headerIconsService.hideAddIcon();
+    this.headerIconsService.hideSubmitIcon();
   }
 
   private getAlarmList(): void {
@@ -74,12 +74,12 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
         if (this.alarmClocks.length) {
 
           if (!this.isAlarmEditMode) {
-            this.mainNavService.showEditIcon();
+            this.headerIconsService.showEditIcon();
           }
 
         } else {
-          this.mainNavService.hideEditIcon();
-          this.mainNavService.hideSubmitIcon();
+          this.headerIconsService.hideEditIcon();
+          this.headerIconsService.hideSubmitIcon();
         }
 
       });

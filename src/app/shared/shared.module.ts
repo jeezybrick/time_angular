@@ -15,7 +15,6 @@ import {
   MatProgressBarModule, MatSlideToggleModule
 } from '@angular/material';
 import { FormsModule } from '@angular/forms';
-import { HeaderIconsComponent } from './components/header-icons/header-icons.component';
 
 
 @NgModule({
@@ -38,6 +37,6 @@ import { HeaderIconsComponent } from './components/header-icons/header-icons.com
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
   ],
-  declarations: [HeaderIconsComponent]
+  declarations: []
 })
 export class SharedModule { }

@@ -1,0 +1,27 @@
+<ng-container>
+
+  <button *ngIf="isShowEditIcon | async"
+          mat-icon-button
+          (click)="onEditButtonPush()">
+    <mat-icon aria-label="Edit mode">create</mat-icon>
+  </button>
+  <button *ngIf="isShowSubmitIcon | async"
+          mat-icon-button
+          (click)="onSubmitButtonPush()">
+    <mat-icon aria-label="Submit editing">done</mat-icon>
+  </button>
+  <button *ngIf="isShowAddIcon | async"
+          mat-icon-button
+          (click)="onAddButtonPush()">
+    <mat-icon aria-label="Add new alarm clock">add</mat-icon>
+  </button>
+
+</ng-container>
+
+<ng-container *ngIf="isShowBackIcon | async">
+
+  <button mat-button (click)="onBackButtonPush()" class="go-back-button">
+    <mat-icon aria-label="Go back">arrow_back</mat-icon>
+  </button>
+
+</ng-container>

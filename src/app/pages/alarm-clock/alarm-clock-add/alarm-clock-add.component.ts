@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Alarm } from '../../../shared/models/alarm.model';
 import { Router } from '@angular/router';
+
+import { Alarm } from '../../../shared/models/alarm.model';
 import { AlarmClockService } from '../../../shared/services/alarm-clock.service';
-import { MainNavService } from '../../../shared/services/main-nav.service';
+import { HeaderIconsService } from '../../../shared/services/header-icons.service';
 
 
 @Component({
@@ -35,16 +36,16 @@ export class AlarmClockAddComponent implements OnInit, OnDestroy {
   public time: Date = new Date();
 
   constructor(private router: Router,
-              private mainNavService: MainNavService,
+              private headerIconsService: HeaderIconsService,
               private alarmClockService: AlarmClockService) {
   }
 
   ngOnInit() {
-    this.mainNavService.showBackIcon();
+    this.headerIconsService.showBackIcon();
   }
 
   ngOnDestroy() {
-    this.mainNavService.hideBackIcon();
+    this.headerIconsService.hideBackIcon();
   }
 
   public toggleUserRepeatChoice(choice): void {
