@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { untilComponentDestroyed } from 'ng2-rx-componentdestroyed';
 
 import { Alarm } from '../../../shared/models/alarm.model';
 import { AlarmClockService } from '../../../shared/services/alarm-clock.service';
 import { HeaderIconsService } from '../../../shared/services/header-icons.service';
+
 
 
 @Component({
@@ -42,10 +44,21 @@ export class AlarmClockAddComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.headerIconsService.showBackIcon();
+    this.headerIconsService.showSubmitIcon();
+
+    this.headerIconsService.onSubmitIconPushed()
+      .pipe(
+        untilComponentDestroyed(this)
+      )
+      .subscribe(() => {
+        this.saveChanges();
+      });
+
   }
 
   ngOnDestroy() {
     this.headerIconsService.hideBackIcon();
+    this.headerIconsService.hideSubmitIcon();
   }
 
   public toggleUserRepeatChoice(choice): void {
@@ -72,7 +85,7 @@ export class AlarmClockAddComponent implements OnInit, OnDestroy {
     return this.userMelodyChoice === melody;
   }
 
-  public saveChanges(): void {
+  private saveChanges(): void {
 
     const saveData = {
       id: Math.floor(Math.random() * 100001),
@@ -85,6 +98,9 @@ export class AlarmClockAddComponent implements OnInit, OnDestroy {
     };
 
     this.alarmClockService.saveAlarmToList(saveData)
+      .pipe(
+        untilComponentDestroyed(this)
+      )
       .subscribe((data: Alarm[]) => {
         this.router.navigate(['/alarm-clock']);
       });

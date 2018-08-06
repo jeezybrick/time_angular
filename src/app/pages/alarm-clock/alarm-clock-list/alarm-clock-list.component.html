@@ -1,6 +1,11 @@
 <ng-container *ngIf="!isAlarmClockListLoading; else contacts_loading">
 
-  <mat-list>
+  <mat-list
+        infiniteScroll
+        [scrollWindow]="false"
+		    [infiniteScrollDistance]="2"
+		    [infiniteScrollThrottle]="50"
+		    (scrolled)="onScroll()">
 
     <ng-container *ngFor="let clock of alarmClocks; let i = index;let last = last">
 

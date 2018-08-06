@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { untilComponentDestroyed } from 'ng2-rx-componentdestroyed';
 
 import { AlarmClockService } from '../../../shared/services/alarm-clock.service';
 import { Alarm } from '../../../shared/models/alarm.model';
 import { HeaderIconsService } from '../../../shared/services/header-icons.service';
+
 
 @Component({
   selector: 'app-alarm-clock-list',
@@ -31,6 +33,9 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
     this.headerIconsService.showAddIcon();
 
     this.headerIconsService.onEditIconPushed()
+      .pipe(
+        untilComponentDestroyed(this)
+      )
       .subscribe((data) => {
 
         this.isAlarmEditMode = true;
@@ -41,11 +46,17 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
       });
 
     this.headerIconsService.onAddIconPushed()
+      .pipe(
+        untilComponentDestroyed(this)
+      )
       .subscribe((data) => {
         this.router.navigate(['/alarm-clock/add']);
       });
 
     this.headerIconsService.onSubmitIconPushed()
+      .pipe(
+        untilComponentDestroyed(this)
+      )
       .subscribe((data) => {
 
         this.isAlarmEditMode = false;
@@ -67,6 +78,9 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
   private getAlarmList(): void {
 
     this.alarmClockService.getAlarmList()
+      .pipe(
+        untilComponentDestroyed(this)
+      )
       .subscribe((data: Alarm[]) => {
 
         this.alarmClocks = data;
@@ -106,6 +120,9 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
   public toggleAlarmState(alarm: Alarm): void {
 
     this.alarmClockService.disableAlarmItem(alarm)
+      .pipe(
+        untilComponentDestroyed(this)
+      )
       .subscribe(() => {
         alarm.disable = !alarm.disable;
       });
@@ -116,8 +133,12 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
     return this.alarmItemInRemoveMode === alarm;
   }
 
+  public onScroll() {
+    console.log('scrolled!!');
+  }
 
-  swipe(e: TouchEvent, when: string, alarm: Alarm): void {
+
+  public swipe(e: TouchEvent, when: string, alarm: Alarm): void {
 
     const coord: [number, number] = [e.changedTouches[0].pageX, e.changedTouches[0].pageY];
     const time = new Date().getTime();

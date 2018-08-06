@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import {
   MatButtonModule,
@@ -36,6 +37,7 @@ import { FormsModule } from '@angular/forms';
     MatExpansionModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    InfiniteScrollModule,
   ],
   declarations: []
 })

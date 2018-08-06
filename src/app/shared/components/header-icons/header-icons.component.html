@@ -20,7 +20,8 @@
 
 <ng-container *ngIf="isShowBackIcon | async">
 
-  <button mat-button (click)="onBackButtonPush()" class="go-back-button">
+  <button mat-icon-button (click)="onBackButtonPush()"
+          class="go-back-button">
     <mat-icon aria-label="Go back">arrow_back</mat-icon>
   </button>
 
