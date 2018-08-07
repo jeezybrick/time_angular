@@ -1,0 +1,51 @@
+.action-icons.default {
+  margin-right: -15px;
+  width: 15%;
+  white-space: nowrap;
+  text-align: right;
+  color: #3f51b5;
+
+  span {
+    color: rgba(0, 0, 0, .54);
+  }
+}
+
+.mat-expansion-panel-header-title {
+  flex-grow: 100;
+}
+
+.repeat-signal-panel {
+
+  .mat-expansion-panel-header {
+    padding-right: 0;
+    color: rgba(0,0,0,.87) !important;
+
+    .mat-slide-toggle {
+      margin-right: -5px;
+    }
+  }
+}
+
+.time-picker-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2em;
+
+}
+
+.owl-dt-inline {
+  width: 100%;
+}
+
+.mat-list-item-content {
+  padding: 0;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.user-repeat-choices-list {
+  text-transform: capitalize;
+}

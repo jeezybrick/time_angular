@@ -7,8 +7,9 @@ import { Alarm } from '../models/alarm.model';
 })
 export class AlarmClockService {
 
-  public isEditMode$ = new BehaviorSubject<boolean>(false);
   public alarms$ = new BehaviorSubject<Alarm[]>(this.getAlarmListFormLocalStorage());
+  public alarm$ = new Subject<Alarm>();
+  public editedAlarm$ = new Subject<Alarm>();
 
   constructor() {
   }
@@ -17,13 +18,29 @@ export class AlarmClockService {
     return this.alarms$.asObservable();
   }
 
-  private getAlarmListFormLocalStorage(): Alarm[] {
-    const alarms = localStorage.getItem('alarms');
-    return JSON.parse(alarms) || [];
+  public getAlarmDetail(alarmId: number): Observable<Alarm> {
+
+    return this.alarm$.asObservable();
+  }
+
+  public getEditedAlarmDetail(alarmId: number): Observable<Alarm> {
+
+    return this.editedAlarm$.asObservable();
+  }
+
+  public setAlarmDetail(alarmId: number): Alarm {
+
+    const alarm = this.getAlarmDetailFromStorage(alarmId);
+
+    this.alarm$.next(alarm);
+
+    return alarm;
   }
 
   public saveAlarmToList(alarmData): Observable<Alarm[]> {
+
     const alarms = this.getAlarmListFormLocalStorage();
+
     alarms.push(alarmData);
     localStorage.setItem('alarms', JSON.stringify(alarms));
 
@@ -32,7 +49,28 @@ export class AlarmClockService {
     return this.getAlarmList();
   }
 
+  public saveAlarmDetail(alarmData): Alarm {
+
+    const alarms = this.getAlarmListFormLocalStorage();
+
+    const index = alarms.findIndex((item) => {
+      return item.id === alarmData.id;
+    });
+
+    if (index > -1) {
+      alarms[index] = alarmData;
+    }
+
+    localStorage.setItem('alarms', JSON.stringify(alarms));
+
+    this.alarms$.next(alarms);
+    this.editedAlarm$.next(alarmData);
+
+    return alarmData;
+  }
+
   public removeAlarmFromList(alarmData): Observable<Alarm[]> {
+
     const alarms = this.getAlarmListFormLocalStorage();
 
     const index = alarms.findIndex((item) => {
@@ -71,16 +109,25 @@ export class AlarmClockService {
     return this.getAlarmList();
   }
 
-  public isEditMode(): Observable<boolean> {
-    return this.isEditMode$.asObservable();
+  private getAlarmListFormLocalStorage(): Alarm[] {
+
+    const alarms = localStorage.getItem('alarms');
+
+    return JSON.parse(alarms) || [];
   }
 
-  public enableEditMode() {
-    this.isEditMode$.next(true);
-  }
+  private getAlarmDetailFromStorage(alarmId: number): Alarm {
 
-  public disableEditMode() {
-    this.isEditMode$.next(false);
+    const alarms = this.getAlarmListFormLocalStorage();
+
+    const index = alarms.findIndex((item) => {
+      return item.id === alarmId;
+    });
+
+    if (index > -1) {
+      return alarms[index];
+    }
+
   }
 
 

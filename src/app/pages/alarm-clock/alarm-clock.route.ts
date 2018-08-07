@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { AlarmClockListComponent } from './alarm-clock-list/alarm-clock-list.component';
 import { AlarmClockAddComponent } from './alarm-clock-add/alarm-clock-add.component';
+import { AlarmClockEditComponent } from './alarm-clock-edit/alarm-clock-edit.component';
 
 
 export const alarmClockRoutes: Routes = [
@@ -13,7 +14,7 @@ export const alarmClockRoutes: Routes = [
   },
  {
     path: ':id/edit',
-    component: AlarmClockAddComponent
+    component: AlarmClockEditComponent
   },
   {
     path: ':id',

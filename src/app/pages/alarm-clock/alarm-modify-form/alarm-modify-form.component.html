@@ -1,0 +1,105 @@
+
+<div class="time-picker-wrap">
+  <owl-date-time-inline [pickerType]="'timer'" [(ngModel)]="userData.time"></owl-date-time-inline>
+</div>
+
+
+<mat-accordion [multi]="false">
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Повтор
+      </mat-panel-title>
+      <mat-panel-description>
+
+        <ng-container *ngIf="!userData.daysOfWeek.length">
+          Никогда
+        </ng-container>
+       <span class="user-repeat-choices-list" *ngFor="let choice of userData.daysOfWeek; let i = index;let last = last">
+         {{ choice | slice:7:9 }} 	&nbsp;
+       </span>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-list>
+
+      <mat-list-item *ngFor="let choice of repeatChoices; let i = index;let last = last"
+                     (click)="toggleUserRepeatChoice(choice)">
+
+        <h4 class="option" mat-line>{{ choice }}</h4>
+
+        <div class="action-icons default">
+          <button mat-icon-button *ngIf="isChoiceInUserChoices(choice)">
+            <mat-icon aria-label="mjjjj">done</mat-icon>
+          </button>
+        </div>
+
+        <mat-divider></mat-divider>
+
+      </mat-list-item>
+    </mat-list>
+
+  </mat-expansion-panel>
+  <mat-divider></mat-divider>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Название
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ userData.name }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-form-field>
+      <input matInput placeholder="Название" [(ngModel)]="userData.name">
+    </mat-form-field>
+  </mat-expansion-panel>
+  <mat-divider></mat-divider>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Мелодия
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ userData.melody }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+     <mat-list>
+
+      <mat-list-item *ngFor="let melody of melodyList; let i = index;let last = last"
+                     (click)="setUserMelodyChoice(melody)">
+
+        <h4 class="option" mat-line>{{ melody }}</h4>
+
+        <div class="action-icons default">
+          <button mat-icon-button *ngIf="isMelodyInUserChoice(melody)">
+            <mat-icon aria-label="mjjjj">done</mat-icon>
+          </button>
+        </div>
+
+        <mat-divider></mat-divider>
+
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+  <mat-divider></mat-divider>
+
+  <mat-expansion-panel hideToggle class="repeat-signal-panel" [disabled]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Повторение сигнала
+      </mat-panel-title>
+      <mat-panel-description>
+         <mat-slide-toggle [checked]="userData.isRepeatSignal"
+                           (change)="userData.isRepeatSignal = !userData.isRepeatSignal">
+         </mat-slide-toggle>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+  </mat-expansion-panel>
+  <mat-divider></mat-divider>
+
+</mat-accordion>

@@ -1,0 +1,12 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.icons-wrap {
+  display: flex;
+  box-sizing: border-box;
+  padding: 0 16px;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+}

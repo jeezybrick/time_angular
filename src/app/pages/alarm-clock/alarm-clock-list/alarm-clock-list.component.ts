@@ -83,6 +83,8 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
       )
       .subscribe((data: Alarm[]) => {
 
+        console.log(data);
+
         this.alarmClocks = data;
 
         if (this.alarmClocks.length) {

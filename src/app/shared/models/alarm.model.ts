@@ -7,7 +7,17 @@ export class Alarm {
   public melody: string;
   public isRepeatSignal: boolean;
   public disable: boolean;
-  public removeMode: boolean;
 
-  constructor() {}
+
+  constructor(id: number, time: Date, daysOfWeek: string[], name: string, melody: string, isRepeatSignal: boolean) {
+
+    this.id = id;
+    this.time = time;
+    this.daysOfWeek = daysOfWeek;
+    this.name = name;
+    this.melody = melody;
+    this.isRepeatSignal = isRepeatSignal;
+
+  }
+
 }

@@ -36,7 +36,6 @@ export class AppComponent  implements OnDestroy {
   public checkRouterEvent(routerEvent: Event): void {
     if (routerEvent instanceof NavigationStart) {
       this.loading = true;
-      this.alarmClockService.disableEditMode();
     }
 
     if (routerEvent instanceof NavigationEnd ||
