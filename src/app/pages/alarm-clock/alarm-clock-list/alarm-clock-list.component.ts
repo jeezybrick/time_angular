@@ -83,8 +83,6 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
       )
       .subscribe((data: Alarm[]) => {
 
-        console.log(data);
-
         this.alarmClocks = data;
 
         if (this.alarmClocks.length) {
@@ -116,7 +114,22 @@ export class AlarmClockListComponent implements OnInit, OnDestroy {
   }
 
   public removeAlarmClockFormList(alarm: Alarm): void {
-    this.alarmClockService.removeAlarmFromList(alarm);
+
+    this.alarmClockService.removeAlarmFromList(alarm)
+      .pipe(
+        untilComponentDestroyed(this)
+      )
+      .subscribe((data: Alarm) => {
+
+        const index = this.alarmClocks.findIndex((item) => {
+          return item.id === data.id;
+        });
+
+        if (index > -1) {
+          this.alarmClocks.splice(index, 1);
+        }
+
+      });
   }
 
   public toggleAlarmState(alarm: Alarm): void {

@@ -29,7 +29,6 @@ export class AlarmClockEditComponent implements OnInit, OnDestroy {
 
     if (id) {
       this.getAlarmDetail(+id);
-      this.alarmClockService.setAlarmDetail(+id);
     }
 
     this.headerIconsService.showBackIcon();
@@ -61,16 +60,13 @@ export class AlarmClockEditComponent implements OnInit, OnDestroy {
 
   public onFormSubmitted(alarmData: Alarm): void {
 
-     this.alarmClockService.getEditedAlarmDetail(alarmData.id)
+      this.alarmClockService.saveAlarmDetail(alarmData)
         .pipe(
           untilComponentDestroyed(this)
         )
         .subscribe((data: Alarm) => {
           this.router.navigate(['/alarm-clock']);
         });
-
-
-      this.alarmClockService.saveAlarmDetail(alarmData);
 
   }
 

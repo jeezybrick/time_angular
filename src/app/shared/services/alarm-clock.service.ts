@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { Alarm } from '../models/alarm.model';
+import { startWith } from 'rxjs/internal/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -8,33 +9,26 @@ import { Alarm } from '../models/alarm.model';
 export class AlarmClockService {
 
   public alarms$ = new BehaviorSubject<Alarm[]>(this.getAlarmListFormLocalStorage());
+ // public alarm$ = new BehaviorSubject<Alarm>(null);
   public alarm$ = new Subject<Alarm>();
-  public editedAlarm$ = new Subject<Alarm>();
 
   constructor() {
   }
 
   public getAlarmList(): Observable<Alarm[]> {
-    return this.alarms$.asObservable();
+
+    const alarms = this.getAlarmListFormLocalStorage();
+
+    return of(alarms);
+   // return this.alarms$.asObservable();
   }
 
   public getAlarmDetail(alarmId: number): Observable<Alarm> {
 
-    return this.alarm$.asObservable();
-  }
-
-  public getEditedAlarmDetail(alarmId: number): Observable<Alarm> {
-
-    return this.editedAlarm$.asObservable();
-  }
-
-  public setAlarmDetail(alarmId: number): Alarm {
-
     const alarm = this.getAlarmDetailFromStorage(alarmId);
 
-    this.alarm$.next(alarm);
-
-    return alarm;
+    // return this.alarm$.asObservable().pipe(startWith(alarm));
+    return of(alarm);
   }
 
   public saveAlarmToList(alarmData): Observable<Alarm[]> {
@@ -44,12 +38,10 @@ export class AlarmClockService {
     alarms.push(alarmData);
     localStorage.setItem('alarms', JSON.stringify(alarms));
 
-    this.alarms$.next(alarms);
-
     return this.getAlarmList();
   }
 
-  public saveAlarmDetail(alarmData): Alarm {
+  public saveAlarmDetail(alarmData): Observable<Alarm> {
 
     const alarms = this.getAlarmListFormLocalStorage();
 
@@ -63,13 +55,10 @@ export class AlarmClockService {
 
     localStorage.setItem('alarms', JSON.stringify(alarms));
 
-    this.alarms$.next(alarms);
-    this.editedAlarm$.next(alarmData);
-
-    return alarmData;
+    return this.getAlarmDetail(alarmData.id);
   }
 
-  public removeAlarmFromList(alarmData): Observable<Alarm[]> {
+  public removeAlarmFromList(alarmData): Observable<Alarm> {
 
     const alarms = this.getAlarmListFormLocalStorage();
 
@@ -83,9 +72,7 @@ export class AlarmClockService {
 
     localStorage.setItem('alarms', JSON.stringify(alarms));
 
-    this.alarms$.next(alarms);
-
-    return this.getAlarmList();
+    return of(alarmData);
   }
 
   public disableAlarmItem(alarmData: Alarm): Observable<Alarm[]> {
@@ -100,11 +87,7 @@ export class AlarmClockService {
       alarms[index].disable = !alarmData.disable;
     }
 
-    console.log(alarms);
-
     localStorage.setItem('alarms', JSON.stringify(alarms));
-
-    this.alarms$.next(alarms);
 
     return this.getAlarmList();
   }
